@@ -1,6 +1,6 @@
-import discord
 from discord.ext import commands
 import botToken
+from discordBot.cogs.tictactoe import TicTacToe
 
 bot = commands.Bot(command_prefix="_")
 
@@ -8,6 +8,14 @@ bot = commands.Bot(command_prefix="_")
 @bot.event
 async def on_ready():
     print('We successfully logged in as {0.user}'.format(bot))
+bot.add_cog(TicTacToe(bot))
+
+
+@bot.command()
+async def cog_reload(ctx):
+    bot.remove_cog("TicTacToe")
+    bot.add_cog(TicTacToe(bot))
+    await ctx.send("Reloaded tictactoe.")
 
 
 @bot.command()
