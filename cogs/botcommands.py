@@ -23,11 +23,13 @@ class BotCommands(commands.Cog):
         await ctx.send(f'Successfully purged `{amount}` messages. Requested by **{ctx.message.author}**')
 
     @commands.command()
-    async def gethostname(self,ctx):
+    async def gethostname(self, ctx):
         localip = socket.gethostbyname(socket.gethostname())
-        match(localip):
-            case "10.153.222.48": localip = f"Theodors dator: {localip}"
-            case "10.153.220.73": localip = f"Pauls dator: {localip}"
+        match localip:
+            case "10.153.222.48":
+                localip = f"Theodors dator: {localip}"
+            case "10.153.220.73":
+                localip = f"Pauls dator: {localip}"
         await ctx.send(localip)
 
 
