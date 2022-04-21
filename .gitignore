@@ -1,3 +1,5 @@
+.gitignore
 .idea
 botToken.py
 __pycache__
+testing.py
