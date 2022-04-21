@@ -5,6 +5,7 @@ class TicTacToe(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # Tictactoe command
     @commands.command()
     async def ttt(self, ctx):
         w, h = 8, 5
