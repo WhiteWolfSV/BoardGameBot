@@ -1,17 +1,21 @@
+from os import listdir
 from discord.ext import commands
 import botToken
 import discord
 import os
 
 bot = commands.Bot(command_prefix="_")
+# Role id for bot master
+botMasterRoleId = 966332497862484068
 
 
 @bot.event
 async def on_ready():
     print('We successfully logged in as {0.user}'.format(bot))
-
-
-bot.load_extension('cogs.tictactoe')
+    # Loading all cogs in folder "cogs"
+    for file in listdir('cogs'):
+        if file.endswith(".py"):
+            bot.load_extension(f"cogs.{file[:-3]}")
 
 
 @bot.event
@@ -25,7 +29,7 @@ async def on_command_error(ctx, error):
 # Added a way to reload cogs.
 @bot.group()
 async def cog(ctx):
-    if "966332497862484068" in str(ctx.message.author.roles):
+    if str(botMasterRoleId) in str(ctx.message.author.roles):
 
         if ctx.invoked_subcommand is None:
             await ctx.send('Invalid input, please follow the command with "load, unload or reload".')
@@ -34,27 +38,25 @@ async def cog(ctx):
 
 
 @cog.command()
+async def load(ctx, cogname):
+    if str(botMasterRoleId) in str(ctx.message.author.roles):
+        bot.load_extension(f"cogs.{cogname}")
+        await ctx.send(f"Successfully loaded {cogname}.")
+
+
+@cog.command()
+async def unload(ctx, cogname):
+    if str(botMasterRoleId) in str(ctx.message.author.roles):
+        bot.unload_extension(f"cogs.{cogname}")
+        await ctx.send(f"Successfully unloaded {cogname}.")
+
+
+@cog.command()
 async def reload(ctx, cogname):
-    if "966332497862484068" in str(ctx.message.author.roles):
+    if str(botMasterRoleId) in str(ctx.message.author.roles):
         bot.unload_extension(f"cogs.{cogname}")
         bot.load_extension(f"cogs.{cogname}")
-        await ctx.send(f"Successfully Reloaded {cogname}.")
-
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send("pong!")
-
-
-@bot.command()
-async def pong(ctx):
-    await ctx.send("ping!")
-
-
-@bot.command()
-async def stop(ctx):
-    await ctx.send("Stopping all processes...")
-    await bot.close()
+        await ctx.send(f"Successfully reloaded {cogname}.")
 
 
 if __name__ == '__main__':
