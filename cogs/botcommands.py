@@ -1,7 +1,6 @@
 from discord.ext import commands
+from discord.ext.commands import has_permissions
 import discord
-
-from boardGameBot.main import botMasterRoleId
 
 
 class BotCommands(commands.Cog):
@@ -17,10 +16,10 @@ class BotCommands(commands.Cog):
         await ctx.send("ping!")
 
     @commands.command()
+    @has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=3):
-        if str(botMasterRoleId) in str(ctx.message.author.roles):
-            await ctx.channel.purge(limit=amount+1)
-            await ctx.send(f'Successfully purged `{amount}` messages. Requested by **{ctx.message.author}**')
+        await ctx.channel.purge(limit=amount + 1)
+        await ctx.send(f'Successfully purged `{amount}` messages. Requested by **{ctx.message.author}**')
 
 
 def setup(bot):

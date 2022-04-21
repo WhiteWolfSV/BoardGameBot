@@ -26,7 +26,7 @@ async def on_command_error(ctx, error):
         await ctx.send(error)
 
 
-# Added a way to reload cogs.
+# Commands to load, unload and reload extensions (cogs).
 @bot.group()
 async def cog(ctx):
     if str(botMasterRoleId) in str(ctx.message.author.roles):
