@@ -1,6 +1,6 @@
 from discord.ext import commands
 import botToken
-from boardGameBot.cogs.tictactoe import TicTacToe
+from cogs.tictactoe import TicTacToe
 
 bot = commands.Bot(command_prefix="_")
 
