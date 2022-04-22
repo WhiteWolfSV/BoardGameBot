@@ -72,23 +72,30 @@ class TicTacToe(commands.Cog):
             elif b[0][2] == b[1][1] == b[2][0] and b[1][1] != " ":
                 winner == b[1][0]
                 return True
-        def ChekcTie(b):
+        def ChekcTie(b): #Check for ties
             global again
             if "" not in b:
                 printboard(b)
                 await ctx.send("Tie")
                 again = False
 
+        def Win(b):
+            if CheckDiag(b) or CheckRow(b) or CheckColumn():
+                ctx.send(f"Winner is{winner}")
+                again = False
+
         def switchplayer():
-            if curentplayer == player1
+            global curentplayer
+            if curentplayer == player1:
                 curentplayer = player2
                 nextplayer = player1
-            elif curentplayer == player2
+            elif curentplayer == player2:
                 curentplayer = player1
                 nextplayer = player2
-
-        again = True
-        while again == True:
+        while again:
             printboard(b)
             fill(b)
+            Win()
+            ChekcTie(b)
+            switchplayer()
 
