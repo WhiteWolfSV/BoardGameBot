@@ -1,8 +1,8 @@
 from os import listdir
 from discord.ext import commands
-import botToken
 import discord
 import os
+import botToken
 
 bot = commands.Bot(command_prefix="_")
 # Role id for bot master
