@@ -1,7 +1,6 @@
 from os import listdir
 from discord.ext import commands
 import discord
-import os
 import botToken
 
 bot = commands.Bot(command_prefix="_")
@@ -53,10 +52,9 @@ async def unload(ctx, cogname):
 
 @cog.command()
 async def reload(ctx, cogname):
-    if str(botMasterRoleId) in str(ctx.message.author.roles):
-        bot.unload_extension(f"cogs.{cogname}")
-        bot.load_extension(f"cogs.{cogname}")
-        await ctx.send(f"Successfully reloaded {cogname}.")
+    bot.unload_extension(f"cogs.{cogname}")
+    bot.load_extension(f"cogs.{cogname}")
+    await ctx.send(f"Successfully reloaded {cogname}.")
 
 
 if __name__ == '__main__':

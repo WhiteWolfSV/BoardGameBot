@@ -25,13 +25,12 @@ class BotCommands(commands.Cog):
     @commands.command()
     async def gethostname(self, ctx):
         localip = socket.gethostbyname(socket.gethostname())
-        match localip:
-            case "10.153.222.48":
-                localip = f"Theodors dator: {localip}"
-            case "10.153.220.73":
-                localip = f"Pauls dator: {localip}"
-        await ctx.send(localip)
-
+        user_to_ip = {'10.153.222.48': 'Theodors dator', '192.168.10.209': 'Pauls dator'}  # Use a dictionary in order
+        # to avoid
+        # repetitive and ambiguous code. Format IP: HOSTNAME
+        for i in user_to_ip:
+            if i == localip:
+                await ctx.send(f'{user_to_ip[i]}: {i}')
 
 def setup(bot):
     bot.add_cog(BotCommands(bot))
