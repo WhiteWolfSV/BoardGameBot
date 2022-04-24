@@ -30,9 +30,6 @@ class BotCommands(commands.Cog):
         for i in user_to_ip:
             if i == localip:
                 await ctx.send(f'{user_to_ip[i]} is online.')
-            else:
-                await ctx.send(localip)
-                break
 
 
 def setup(bot):
