@@ -1,0 +1,2 @@
+botToken = 'OTY2NjIzMTk0NTQ1MDAwNTE4.YmEcAA.rN7StB5MBmCx1552qW3hJhFIkW0'
+author = 'Paul'

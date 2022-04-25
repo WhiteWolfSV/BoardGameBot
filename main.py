@@ -1,7 +1,7 @@
 from os import listdir
 from discord.ext import commands
 import discord
-import botToken
+import config
 
 bot = commands.Bot(command_prefix="_")
 # Role id for bot master
@@ -58,4 +58,4 @@ async def reload(ctx, cogname):
 
 
 if __name__ == '__main__':
-    bot.run(botToken.botToken)
+    bot.run(config.botToken)

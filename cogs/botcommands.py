@@ -1,7 +1,6 @@
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-import socket
-import discord
+import config
 
 
 class BotCommands(commands.Cog):
@@ -24,13 +23,7 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def gethostname(self, ctx):
-        localip = socket.gethostbyname(socket.gethostname())
-        user_to_ip = {'10.153.222.48': 'Theodors dator', '192.168.10.209': 'Pauls dator'}  # Use a dictionary in order
-        # to avoid
-        # repetitive and ambiguous code. Format IP: HOSTNAME
-        for i in user_to_ip:
-            if i == localip:
-                await ctx.send(f'{user_to_ip[i]}: {i}')
+        await ctx.send(f'{config.author} is currently running BoardGameBot.')
 
 def setup(bot):
     bot.add_cog(BotCommands(bot))
