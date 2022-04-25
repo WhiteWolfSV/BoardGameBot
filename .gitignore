@@ -1,5 +1,5 @@
 .gitignore
 .idea
-botToken.py
+config.py
 __pycache__
 demo
