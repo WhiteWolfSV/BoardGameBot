@@ -29,7 +29,7 @@ class BotCommands(commands.Cog):
         # to avoid repetitive and ambiguous code. Format: IP: HOSTNAME.
         for i in user_to_ip:
             if i == localip:
-                await ctx.send(f'{user_to_ip[i]} is online.')
+                await ctx.send(f'{user_to_ip[i]} is online ({i}).')
 
 
 def setup(bot):
