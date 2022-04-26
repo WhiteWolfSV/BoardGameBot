@@ -1,5 +1,6 @@
-<h1>A discord bot</h1>
+<h1>BoardGameBot</h1>
+<h2>A multipurpose Discord bot with board games</h2>
 
-
-In config.py, botToken should be assigned the API token, and the author variable should be assigned to your name.<br>
-<br>Don't forget to always pull the repository before editing.
+<b>BoardGameBot</b> is a Discord bot written in discord.py.
+<h3>Note to fellow developers:</h3>BGB configuration file is <i>config.py</i>. It should contain the Discord API assigned to a variable called <i>botToken</i>. Assign your name to a variable called <i>author</i>.<br>
+Remember to always pull the repo before coding!
