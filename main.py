@@ -3,17 +3,12 @@ from discord.ext import commands
 import discord
 import config
 
-<<<<<<< HEAD
+
 intents = discord.Intents.all()
 
 bot = commands.Bot(command_prefix="_", intents=intents)
 # Role id for bot master
 botMasterRoleId = 966332497862484068
-
-=======
-bot = commands.Bot(command_prefix="_")
-masterRole = 966332497862484068
->>>>>>> 771a190f345d3508a380485722eb22b43db3634f
 
 @bot.event
 async def on_ready():
@@ -34,38 +29,33 @@ async def on_command_error(ctx, error):
 
 # Commands to load, unload and reload extensions (cogs).
 @bot.group()
-@commands.has_role(masterRole)
+@commands.has_role(botMasterRoleId)
 async def cog(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send("Invalid input, please follow the command with \"load, unload or reload\".")
 
 @cog.command()
-@commands.has_role(masterRole)
+@commands.has_role(botMasterRoleId)
 async def load(ctx, cogname):
-<<<<<<< HEAD
+
     if str(botMasterRoleId) in str(ctx.message.author.roles):
         await bot.load_extension(f"cogs.{cogname}")
         await ctx.send(f"Successfully loaded {cogname}.")
-=======
-    bot.load_extension(f"cogs.{cogname}")
-    await ctx.send(f"Successfully loaded {cogname}.")
->>>>>>> 771a190f345d3508a380485722eb22b43db3634f
+
 
 
 @cog.command()
-@commands.has_role(masterRole)
+@commands.has_role(botMasterRoleId)
 async def unload(ctx, cogname):
-<<<<<<< HEAD
+
     if str(botMasterRoleId) in str(ctx.message.author.roles):
         await bot.unload_extension(f"cogs.{cogname}")
         await ctx.send(f"Successfully unloaded {cogname}.")
-=======
-    bot.unload_extension(f"cogs.{cogname}")
-    await ctx.send(f"Successfully unloaded {cogname}.")
->>>>>>> 771a190f345d3508a380485722eb22b43db3634f
+
 
 
 @cog.command()
+@commands.has_role(botMasterRoleId)
 async def reload(ctx, cogname):
     await bot.unload_extension(f"cogs.{cogname}")
     await bot.load_extension(f"cogs.{cogname}")
