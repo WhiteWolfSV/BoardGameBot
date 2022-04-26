@@ -2,10 +2,7 @@ from os import listdir
 from discord.ext import commands
 import discord
 import config
-
 bot = commands.Bot(command_prefix="_")
-# Role id for bot master
-botMasterRoleId = 966332497862484068
 
 
 @bot.event
@@ -27,27 +24,23 @@ async def on_command_error(ctx, error):
 
 # Commands to load, unload and reload extensions (cogs).
 @bot.group()
+@commands.has_role(966332497862484068)
 async def cog(ctx):
-    if str(botMasterRoleId) in str(ctx.message.author.roles):
-
-        if ctx.invoked_subcommand is None:
-            await ctx.send("Invalid input, please follow the command with \"load, unload or reload\".")
-    else:
-        await ctx.send("You dont have the required role to access this command.")
-
+    if ctx.invoked_subcommand is None:
+        await ctx.send("Invalid input, please follow the command with \"load, unload or reload\".")
 
 @cog.command()
+@commands.has_role(966332497862484068)
 async def load(ctx, cogname):
-    if str(botMasterRoleId) in str(ctx.message.author.roles):
-        bot.load_extension(f"cogs.{cogname}")
-        await ctx.send(f"Successfully loaded {cogname}.")
+    bot.load_extension(f"cogs.{cogname}")
+    await ctx.send(f"Successfully loaded {cogname}.")
 
 
 @cog.command()
+@commands.has_role(966332497862484068)
 async def unload(ctx, cogname):
-    if str(botMasterRoleId) in str(ctx.message.author.roles):
-        bot.unload_extension(f"cogs.{cogname}")
-        await ctx.send(f"Successfully unloaded {cogname}.")
+    bot.unload_extension(f"cogs.{cogname}")
+    await ctx.send(f"Successfully unloaded {cogname}.")
 
 
 @cog.command()
