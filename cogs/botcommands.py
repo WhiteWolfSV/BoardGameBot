@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-from boardGameBot import config
+import config
 
 
 class BotCommands(commands.Cog):
