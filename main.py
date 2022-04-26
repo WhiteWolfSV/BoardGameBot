@@ -3,7 +3,9 @@ from discord.ext import commands
 import discord
 import config
 
-bot = commands.Bot(command_prefix="_")
+intents = discord.Intents.all()
+
+bot = commands.Bot(command_prefix="_", intents=intents)
 # Role id for bot master
 botMasterRoleId = 966332497862484068
 
@@ -14,7 +16,7 @@ async def on_ready():
     # Loading all cogs in folder "cogs"
     for file in listdir('cogs'):
         if file.endswith(".py"):
-            bot.load_extension(f"cogs.{file[:-3]}")
+            await bot.load_extension(f"cogs.{file[:-3]}")
 
 
 @bot.event
@@ -39,21 +41,21 @@ async def cog(ctx):
 @cog.command()
 async def load(ctx, cogname):
     if str(botMasterRoleId) in str(ctx.message.author.roles):
-        bot.load_extension(f"cogs.{cogname}")
+        await bot.load_extension(f"cogs.{cogname}")
         await ctx.send(f"Successfully loaded {cogname}.")
 
 
 @cog.command()
 async def unload(ctx, cogname):
     if str(botMasterRoleId) in str(ctx.message.author.roles):
-        bot.unload_extension(f"cogs.{cogname}")
+        await bot.unload_extension(f"cogs.{cogname}")
         await ctx.send(f"Successfully unloaded {cogname}.")
 
 
 @cog.command()
 async def reload(ctx, cogname):
-    bot.unload_extension(f"cogs.{cogname}")
-    bot.load_extension(f"cogs.{cogname}")
+    await bot.unload_extension(f"cogs.{cogname}")
+    await bot.load_extension(f"cogs.{cogname}")
     await ctx.send(f"Successfully reloaded {cogname}.")
 
 

@@ -13,5 +13,5 @@ class TicTacToe(commands.Cog):
         await ctx.send(f"|{b[0][0]}|{b[1][0]}|{b[2][0]}|")
 
 
-def setup(bot):
-    bot.add_cog(TicTacToe(bot))
+async def setup(bot):
+    await bot.add_cog(TicTacToe(bot))
