@@ -29,7 +29,7 @@ class BotCommands(commands.Cog):
     @commands.command()
     async def getinfo(self, ctx):
         await ctx.send('DM sent!')
-        embed = discord.Embed(title='BoardGameBot', colour=discord.Colour.red(), description='BoardGameBot is a multipurpose Discord bot with board games.')
+        embed = discord.Embed(title='BoardGameBot', colour=discord.Colour.red(), description='BoardGameBot is a multipurpose Discord bot with board games. Read more at https://github.com/WhiteWolfSV/BoardGameBot')
         embed.set_image(url='https://upload.wikimedia.org/wikipedia/en/8/87/Keyboard_cat.jpg')
         await ctx.author.send(embed=embed)
 
