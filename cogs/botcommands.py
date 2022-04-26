@@ -1,3 +1,4 @@
+import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 import config
@@ -24,6 +25,12 @@ class BotCommands(commands.Cog):
     @commands.command()
     async def gethostname(self, ctx):
         await ctx.send(f'{config.author} is currently running BoardGameBot.')
+
+    @commands.command()
+    async def getinfo(self, message):
+        embed = discord.Embed(title='BoardGameBot', colour=discord.Colour.red(), description='BoardGameBot is a multipurpose Discord bot with board games.')
+        embed.set_image(url='https://upload.wikimedia.org/wikipedia/en/8/87/Keyboard_cat.jpg')
+        await message.author.send(embed=embed)
 
 def setup(bot):
     bot.add_cog(BotCommands(bot))
