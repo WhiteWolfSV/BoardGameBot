@@ -31,7 +31,7 @@ async def cog(ctx):
     if str(botMasterRoleId) in str(ctx.message.author.roles):
 
         if ctx.invoked_subcommand is None:
-            await ctx.send('Invalid input, please follow the command with "load, unload or reload".')
+            await ctx.send("Invalid input, please follow the command with \"load, unload or reload\".")
     else:
         await ctx.send("You dont have the required role to access this command.")
 
