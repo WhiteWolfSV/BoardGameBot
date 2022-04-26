@@ -2,8 +2,9 @@ from os import listdir
 from discord.ext import commands
 import discord
 import config
-bot = commands.Bot(command_prefix="_")
 
+bot = commands.Bot(command_prefix="_")
+masterRole = 966332497862484068
 
 @bot.event
 async def on_ready():
@@ -24,20 +25,20 @@ async def on_command_error(ctx, error):
 
 # Commands to load, unload and reload extensions (cogs).
 @bot.group()
-@commands.has_role(966332497862484068)
+@commands.has_role(masterRole)
 async def cog(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send("Invalid input, please follow the command with \"load, unload or reload\".")
 
 @cog.command()
-@commands.has_role(966332497862484068)
+@commands.has_role(masterRole)
 async def load(ctx, cogname):
     bot.load_extension(f"cogs.{cogname}")
     await ctx.send(f"Successfully loaded {cogname}.")
 
 
 @cog.command()
-@commands.has_role(966332497862484068)
+@commands.has_role(masterRole)
 async def unload(ctx, cogname):
     bot.unload_extension(f"cogs.{cogname}")
     await ctx.send(f"Successfully unloaded {cogname}.")
