@@ -10,7 +10,7 @@ botMasterRoleId = 966332497862484068
 
 @bot.event
 async def on_ready():
-    print('We successfully logged in as {0.user}'.format(bot))
+    print('Successfully logged in as {0.user}'.format(bot))
     # Loading all cogs in folder "cogs"
     for file in listdir('cogs'):
         if file.endswith(".py"):
