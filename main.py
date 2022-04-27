@@ -17,6 +17,7 @@ async def on_ready():
     for file in listdir('cogs'):
         if file.endswith(".py"):
             await bot.load_extension(f"cogs.{file[:-3]}")
+    await bot.change_presence(activity=discord.Game(name='We are up and running!'))
 
 
 @bot.event
