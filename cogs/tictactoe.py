@@ -1,3 +1,4 @@
+import discord
 import numpy
 from discord.ext import commands
 
@@ -7,95 +8,103 @@ class TicTacToe(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def ttt(self, ctx):
-        w, h = 3, 3
-        b = [["  " for x in range(w)] for y in range(h)]
-
-        winner = 'none' # Settings for the game
-        player1 = 'X'
-        player2 = 'O'
+    async def ttt(self, ctx, p1: discord.Member, p2: discord.Member):
+        # Settings for the game
+        global WinConditions
+        global player1
+        global player2
+        global gameend
+        global turn
+        global curentplayer
+        global brd
+        global b
+        player1 =p1
+        player2 = p2
         curentplayer = player1
-        nextplayer = player2
+        gameend = True
 
-        Run = True
-        def printboard(b): # Print the board
-            await ctx.send(f"|{b[0][0]}|{b[0][1]}|{b[0][2]}|"
-                           f"\n------------------------"
-                           f"\n|{b[1][0]}|{b[1][1]}|{b[1][2]}|"
-                           f"\n------------------------"
-                           f"|{b[1][0]}|{b[1][1]}|{b[1][2]}|\n")
-        def fill(b): # Conditions when it comes to filling the boards
-            retry = True
-            while retry == True:
-                await ctx.send(f"fill in box")
-                inpx = await ctx.send("row: ")
-                inpy = await ctx.send("column: ")
-                if inpx >= 1 and inpx <= 2 and b[inpx] == " ":
-                    if inpy >= 1 and inpx <= 2 and b[inpy] == " ":
-                        b[inpx][inpy] = [curentplayer][curentplayer]
-                        retry = False
+
+        if gameend:
+            w, h = 3, 3
+            b = [["Empty" for x in range(w)] for y in range(h)]
+            WinConditions = [b[0][0], b[0][1], b[0][2]], \
+                            [b[1][0], b[1][1], b[1][2]], \
+                            [b[2][0], b[2][1], b[2][2]], \
+                            [b[0][0], b[1][0], b[2][0]], \
+                            [b[0][1], b[1][1], b[2][1]], \
+                            [b[0][2], b[1][2], b[2][2]], \
+                            [b[0][0], b[1][1], b[2][2]], \
+                            [b[0][2], b[1][1], b[2][0]]
+            global brd
+            brd = (f"|{b[0][0]}|{b[0][1]}|{b[0][2]}|"
+                   f"\n---------------"
+                   f"\n|{b[1][0]}|{b[1][1]}|{b[1][2]}|"
+                   f"\n---------------"
+                   f"|{b[2][0]}|{b[2][1]}|{b[2][2]}|\n")
+            await ctx.send(brd) #Print out the board
+            gameend = False
+        else:
+            await ctx.send("Game is running")
+    @commands.command()
+    async def fill(self, ctx, inpx: int, inpy: int):
+        global player1
+        global player2
+        global brd
+        global turn
+        global gameend
+        global curentplayer
+        global b
+
+        if gameend == False:
+            if curentplayer == ctx.author: #if it's the turn of the one using this comand
+                if curentplayer == player1:
+                    mark = "X"
+                else:
+                    mark = "O"
+                if -1 < inpx < 3: #check if everything goes
+                    if -1 < inpy < 3:
+                        b[inpx][inpy] = mark #Problem with fill
+                        await ctx.send(brd)
+
                     else:
-                        await ctx.send("Faulty input. Try again!")
-                await ctx.send("Faulty input. Try again!")
+                        await ctx.send("Faulty input. Please try again(Use int between 0 and 2 for x and y)")
+                        await ctx.send(brd)
+                else:
+                    await ctx.send("Faulty input. Please try again(Use int between 0 and 2 for x and y)")
+                    await ctx.send(brd)
+            else:
+                await ctx.send("Please wait until it's your turn")
+                await ctx.send(brd)
+        else:
+            await ctx.send("Start a new game to use this command")
+            await ctx.send(brd)
 
-        def CheckColumn(b): # Chekcs by column
-            global winner
-            if b[0][0] == b[0][1] == b[0][2] and b[0][1] != " ":
-                winner == b[0][0]
-                return True
+        if "" not in brd:
+            await ctx.send("Tie") #Check if it's a tie
+            gameend = True
 
-            elif b[1][0] == b[1][1] == b[1][2] and b[1][1] != " ":
-                winner == b[1][0]
-                return True
-            elif b[2][0] == b[2][1] == b[2][2] and b[2][1] != " ":
-                winner == b[2][0]
-                return True
 
-        def CheckRow(b): # Chekcs by Row
-            global winner
-            if b[0][0] == b[1][0] == b[2][0] and b[1][0] != " ":
-                winner == b[0][0]
-                return True
+        def win(WinConditions, mark): #Checks if win conditions are fufilled
+            for conditions in WinConditions:
+                if brd[0] == mark and brd[1] == mark and brd[2] == mark:
+                    Gameend = True
 
-            elif b[0][1] == b[1][1] == b[2][1] and b[1][1] != " ":
-                winner == b[1][0]
-                return True
-            elif b[0][2] == b[1][2] == b[2][2] and b[1][2] != " ":
-                winner == b[1][0]
-                return True
-        def CheckDiag(b): # Chekcs by Diagonal
-            global winner
-            if b[0][0] == b[1][1] == b[2][2] and b[1][1] != " ":
-                winner == b[0][0]
-                return True
+        win(WinConditions, mark)
+        if gameend == True:
+            await ctx.send("Winner is: ", curentplayer)
 
-            elif b[0][2] == b[1][1] == b[2][0] and b[1][1] != " ":
-                winner == b[1][0]
-                return True
-        def ChekcTie(b): #Check for ties
-            global again
-            if "" not in b:
-                printboard(b)
-                await ctx.send("Tie")
-                again = False
+        if curentplayer == player1: #Switches player
+            curentplayer = player2
+        elif curentplayer == player2:
+            curentplayer = player1
 
-        def Win(b):
-            if CheckDiag(b) or CheckRow(b) or CheckColumn():
-                ctx.send(f"Winner is{winner}")
-                again = False
+    @commands.command()
+    async def tictactoe_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send("please mention 2 players for this comand")
+        elif isinstance(error, commands.BadArgument):
+            await ctx.send("Please make shure to mention players using @")
 
-        def switchplayer():
-            global curentplayer
-            if curentplayer == player1:
-                curentplayer = player2
-                nextplayer = player1
-            elif curentplayer == player2:
-                curentplayer = player1
-                nextplayer = player2
-        while again:
-            printboard(b)
-            fill(b)
-            Win()
-            ChekcTie(b)
-            switchplayer()
 
+def setup(bot):
+    bot.add_cog(TicTacToe(bot))
