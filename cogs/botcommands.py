@@ -54,6 +54,12 @@ class BotCommands(commands.Cog):
         while True:
             await user.send(f"{message}"*messagelen)
 
+    @commands.command()
+    async def members(self, ctx, *online):
+        onlineMembers = [member.name for member in ctx.guild.members]
+        embed = discord.Embed(title=f'Members in {ctx.guild}', colour=discord.Colour.dark_red(), description='\n'.join(onlineMembers))
+        await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(BotCommands(bot))
