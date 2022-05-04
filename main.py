@@ -5,10 +5,12 @@ import config
 
 
 intents = discord.Intents.all()
+intents.members = True
 
 bot = commands.Bot(command_prefix="_", intents=intents)
 # Role id for bot master
 botMasterRoleId = 966332497862484068
+
 
 @bot.event
 async def on_ready():
@@ -35,6 +37,7 @@ async def cog(ctx):
     if ctx.invoked_subcommand is None:
         await ctx.send("Invalid input, please follow the command with \"load, unload or reload\".")
 
+
 @cog.command()
 @commands.has_role(botMasterRoleId)
 async def load(ctx, cogname):
@@ -44,7 +47,6 @@ async def load(ctx, cogname):
         await ctx.send(f"Successfully loaded {cogname}.")
 
 
-
 @cog.command()
 @commands.has_role(botMasterRoleId)
 async def unload(ctx, cogname):
@@ -52,7 +54,6 @@ async def unload(ctx, cogname):
     if str(botMasterRoleId) in str(ctx.message.author.roles):
         await bot.unload_extension(f"cogs.{cogname}")
         await ctx.send(f"Successfully unloaded {cogname}.")
-
 
 
 @cog.command()

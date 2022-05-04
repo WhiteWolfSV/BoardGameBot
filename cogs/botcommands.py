@@ -28,10 +28,18 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def getinfo(self, ctx):
-        embed = discord.Embed(title='BoardGameBot', colour=discord.Colour.random(), description='BoardGameBot is a multipurpose Discord bot with board games. Read more at https://github.com/WhiteWolfSV/BoardGameBot')
+        embed = discord.Embed(title='BoardGameBot', colour=discord.Colour.random(),
+                              description='BoardGameBot is a multipurpose Discord bot with board games. Read more at https://github.com/WhiteWolfSV/BoardGameBot')
         embed.set_image(url='https://upload.wikimedia.org/wikipedia/en/8/87/Keyboard_cat.jpg')
         await ctx.author.send(embed=embed)
         await ctx.send('DM sent!')
+
+    @commands.command()
+    async def members(self, ctx, *online):
+        onlineMembers = [member.name for member in ctx.guild.members]
+        embed = discord.Embed(title=f'Members in {ctx.guild}', colour=discord.Colour.dark_red(), description='\n'.join(onlineMembers))
+        await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(BotCommands(bot))
