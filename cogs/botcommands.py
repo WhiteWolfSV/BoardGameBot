@@ -2,7 +2,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 import config
-
+import random
+import wikipedia
 
 class BotCommands(commands.Cog):
     def __init__(self, bot):
@@ -35,11 +36,30 @@ class BotCommands(commands.Cog):
         await ctx.send('DM sent!')
 
     @commands.command()
-    async def members(self, ctx, *online):
+    async def members(self, ctx):
         onlineMembers = [member.name for member in ctx.guild.members]
         embed = discord.Embed(title=f'Members in {ctx.guild}', colour=discord.Colour.dark_red(), description='\n'.join(onlineMembers))
         await ctx.send(embed=embed)
 
+    @commands.command()
+    async def wiki(self, ctx, *, wiki):
+        try:
+            page = wikipedia.page(wiki, auto_suggest=False, redirect=True, preload=False)
+            sum = wikipedia.summary(page.title, sentences=2)
+            embed = discord.Embed(title=page.title, url=page.url, description=sum)
+            await ctx.send(embed=embed)
+        except wikipedia.DisambiguationError as e:
+            page = wikipedia.page(e.options[0], auto_suggest=False, redirect=True, preload=False)
+            sum = wikipedia.summary(page.title, sentences=2)
+            embed = discord.Embed(title=page.title, url=page.url, description=sum)
+            await ctx.send(embed=embed)
 
+        '''async with aiohttp.ClientSession() as session:
+            async with session.get(wiki) as r:
+                if r.status == 200:
+                    await ctx.send('Wikipedia entry exists.')
+                else:
+                    await ctx.send('Wikipedia entry does not exist!')
+'''
 async def setup(bot):
     await bot.add_cog(BotCommands(bot))
