@@ -30,17 +30,28 @@ class HighLow(commands.Cog):
     @commands.command()
     async def hl(self, ctx, message="Default"):
         view = View()
-        button = GrayButton(message)
+        message = "Button Green"
+        message1 = "Button Red"
+        button1 = GrayButton(message)
+        button2 = GrayButton(message1)
 
-        async def button_callback(interaction):
-            button = GreenButton(message)
+        async def button_callback1(interaction):
+            button1 = GreenButton(message)
             view.clear_items()
-            view.add_item(button)
+            view.add_item(button1)
             await interaction.response.edit_message(view=view)
 
-        button.callback = button_callback
+        async def button_callback2(interaction):
+            view.children.remove()
+            button2 = RedButton(message1)
+            view.add_item(button2)
+            await interaction.response.edit_message(view=view)
 
-        view.add_item(button)
+        button1.callback = button_callback1
+        button2.callback = button_callback2
+
+        view.add_item(button1)
+        view.add_item(button2)
         await ctx.send("Test", view=view)
 
 

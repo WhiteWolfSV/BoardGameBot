@@ -26,7 +26,6 @@ async def on_command_error(ctx, error):
     else:
         await ctx.send(error)
 
-
 # Commands to load, unload and reload extensions (cogs).
 @bot.group()
 @commands.has_role(botMasterRoleId)
