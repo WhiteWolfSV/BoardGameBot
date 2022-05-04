@@ -62,6 +62,7 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def wiki(self, ctx, *, wiki):
+        # I have no danged idea why auto_suggest=False isn't doing its job. Help.
         try:
             page = wikipedia.page(wiki, auto_suggest=False, redirect=True, preload=False)  # Fetch article.
             sum = wikipedia.summary(page.title, sentences=2)  # Fetch summary. Restricted to two sentences.
