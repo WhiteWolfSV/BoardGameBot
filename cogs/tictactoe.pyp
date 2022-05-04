@@ -121,5 +121,5 @@ class TicTacToe(commands.Cog):
             curentplayer = player1
 
 
-def setup(bot):
-    bot.add_cog(TicTacToe(bot))
+async def setup(bot):
+    await bot.add_cog(TicTacToe(bot))

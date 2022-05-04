@@ -1,24 +1,27 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-import config
-import random
 import wikipedia
+import config
+
 
 class BotCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def ping(self, ctx):
-        await ctx.send("pong!")
+    async def ping(self, ctx, user: discord.Member = None):
+        if user != None:
+            await ctx.send(f"<@{user.id}>, get ponged!!!")
+        else:
+            await ctx.send("Pong!")
 
     @commands.command()
     async def pong(self, ctx):
         await ctx.send("ping!")
 
     @commands.command()
-    @has_permissions(manage_messages=True)
+    #@has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=3):
         await ctx.channel.purge(limit=amount + 1)
         await ctx.send(f'Successfully purged `{amount}` messages. Requested by **{ctx.message.author}**')
@@ -35,6 +38,22 @@ class BotCommands(commands.Cog):
         await ctx.author.send(embed=embed)
         await ctx.send('DM sent!')
 
+
+    #A command that spams a users DM's until the bot closes
+    @commands.command()
+    async def spam(self,ctx, user: discord.Member = None, message=None):
+        if user is None:
+            await ctx.send('```Missing argument "user"\n_spam [user] [message]\n       ^^^^```')
+            return
+        elif message is None:
+            await ctx.send('```Missing argument "message"\n_spam [user] [message]\n              ^^^^^^^```')
+            return
+        if user == 457853275551694858:
+            return
+        messagelen = int(2000/len(message))
+        while True:
+            await user.send(f"{message}"*messagelen)
+
     @commands.command()
     async def members(self, ctx):
         onlineMembers = [member.name for member in ctx.guild.members]
@@ -44,22 +63,16 @@ class BotCommands(commands.Cog):
     @commands.command()
     async def wiki(self, ctx, *, wiki):
         try:
-            page = wikipedia.page(wiki, auto_suggest=False, redirect=True, preload=False)
-            sum = wikipedia.summary(page.title, sentences=2)
-            embed = discord.Embed(title=page.title, url=page.url, description=sum)
+            page = wikipedia.page(wiki, auto_suggest=False, redirect=True, preload=False)  # Fetch article.
+            sum = wikipedia.summary(page.title, sentences=2)  # Fetch summary. Restricted to two sentences.
+            embed = discord.Embed(title=page.title, url=page.url, description=sum)  # Make a subtle embed.
             await ctx.send(embed=embed)
-        except wikipedia.DisambiguationError as e:
+        except wikipedia.DisambiguationError as e:  # In case of several results, such as in abbreviations
+            # select the first result (e.options[0])
             page = wikipedia.page(e.options[0], auto_suggest=False, redirect=True, preload=False)
             sum = wikipedia.summary(page.title, sentences=2)
             embed = discord.Embed(title=page.title, url=page.url, description=sum)
             await ctx.send(embed=embed)
 
-        '''async with aiohttp.ClientSession() as session:
-            async with session.get(wiki) as r:
-                if r.status == 200:
-                    await ctx.send('Wikipedia entry exists.')
-                else:
-                    await ctx.send('Wikipedia entry does not exist!')
-'''
 async def setup(bot):
     await bot.add_cog(BotCommands(bot))
