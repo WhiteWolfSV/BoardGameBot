@@ -62,16 +62,15 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def wiki(self, ctx, *, wiki):
-        # I have no danged idea why auto_suggest=False isn't doing its job. Help.
         try:
             page = wikipedia.page(wiki, auto_suggest=False, redirect=True, preload=False)  # Fetch article.
-            sum = wikipedia.summary(page.title, sentences=2)  # Fetch summary. Restricted to two sentences.
+            sum = wikipedia.summary(page.title, sentences=2, auto_suggest=False)  # Fetch summary. Restricted to two sentences.
             embed = discord.Embed(title=page.title, url=page.url, description=sum)  # Make a subtle embed.
             await ctx.send(embed=embed)
         except wikipedia.DisambiguationError as e:  # In case of several results, such as in abbreviations
             # select the first result (e.options[0])
             page = wikipedia.page(e.options[0], auto_suggest=False, redirect=True, preload=False)
-            sum = wikipedia.summary(page.title, sentences=2)
+            sum = wikipedia.summary(page.title, sentences=2, auto_suggest=False)
             embed = discord.Embed(title=page.title, url=page.url, description=sum)
             await ctx.send(embed=embed)
 
