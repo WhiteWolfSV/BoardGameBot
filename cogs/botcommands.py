@@ -3,7 +3,6 @@ from discord.ext import commands
 from discord.ext.commands import has_permissions
 from discord.ui import View, Button
 from .classes import buttons
-from boardGameBot import config
 import wikipedia
 import config
 from lyricsgenius import Genius
@@ -13,6 +12,7 @@ class BotCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+#A ping command that sends pong! and the latency of the bot
     @commands.command()
     async def ping(self, ctx, user: discord.Member = None):
         if user != None:
@@ -20,19 +20,20 @@ class BotCommands(commands.Cog):
         else:
             await ctx.send(f"Pong! **{round(self.bot.latency * 1000)}** ms")
 
+#A command, the inverse of the ping command. It sends Ping!
     @commands.command()
     async def pong(self, ctx):
         await ctx.send("ping!")
 
+#A command that removes x amount of messages
     @commands.command()
-    # @has_permissions(manage_messages=True)
+    @has_permissions(manage_messages=True)
     async def purge(self, ctx, amount=3):
         embed = discord.Embed(title=f"Purge request!", colour=discord.Colour.red(),
                               description=f"{ctx.message.author} has requested to purge `{amount}`"
                                           f" messages. Press the green button to confirm or the red button to cancel.")
         await ctx.send(embed=embed)
         await ctx.channel.purge(limit=amount + 1)
-
 
     @commands.command()
     async def gethostname(self, ctx):
@@ -58,9 +59,10 @@ class BotCommands(commands.Cog):
             return
         if user == 457853275551694858:
             return
-        messagelen = int(2000 / len(message))
-        while True:
-            await user.send(f"{message}" * messagelen)
+        else:
+            messagelen = int(2000 / len(message))
+            while True:
+                await user.send(f"{message}" * messagelen)
 
     @commands.command()
     async def members(self, ctx):
