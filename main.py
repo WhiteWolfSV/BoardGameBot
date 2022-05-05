@@ -22,6 +22,7 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name='We are up and running!'))
 
 
+#Error handler
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, discord.ext.commands.errors.MissingRequiredArgument):
