@@ -1,16 +1,12 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-<<<<<<< HEAD
 from discord.ui import View, Button
 from .classes import buttons
 from boardGameBot import config
-
-=======
 import wikipedia
 import config
 from lyricsgenius import Genius
->>>>>>> 02d964f0f5fb164b77643398f61bfadfd39e1a5b
 
 genius = Genius('wR4cRh40SGApa-cRorjLQouljYZYoT388WaCItD74CckdtMnYhynn8pmKGxq7IM1rd_UHFZsW1XoB8ditvL86Q')
 class BotCommands(commands.Cog):
