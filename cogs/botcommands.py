@@ -78,8 +78,15 @@ class BotCommands(commands.Cog):
     @commands.command()
     async def lyrics(self, ctx, *, song):
         song_name = genius.search_song(song)
-        embed = discord.Embed(title=f'{song_name.artist} - {song_name.title}', description=song_name.lyrics)
-        await ctx.send(embed=embed)
+        try:
+            embed = discord.Embed(title=f'{song_name.artist} - {song_name.title}', colour=discord.Colour.blue(), description=song_name.lyrics)
+            await ctx.send(embed=embed)
+        except AttributeError:
+            embed = discord.Embed(title='Error', colour=discord.Colour.red(), description=f'Song **{song}** not found!')
+            await ctx.send(embed=embed)
+        except TimeoutError:
+            embed = discord.Embed(title='Error', colour=discord.Colour.red(), description=f'Genius could not respond in time.')
+            await ctx.send(embed=embed)
 
 
 async def setup(bot):
