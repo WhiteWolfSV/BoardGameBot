@@ -1,11 +1,18 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import has_permissions
+<<<<<<< HEAD
 from discord.ui import View, Button
 from .classes import buttons
 from boardGameBot import config
 
+=======
+import wikipedia
+import config
+from lyricsgenius import Genius
+>>>>>>> 02d964f0f5fb164b77643398f61bfadfd39e1a5b
 
+genius = Genius('wR4cRh40SGApa-cRorjLQouljYZYoT388WaCItD74CckdtMnYhynn8pmKGxq7IM1rd_UHFZsW1XoB8ditvL86Q')
 class BotCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -60,7 +67,7 @@ class BotCommands(commands.Cog):
             await user.send(f"{message}" * messagelen)
 
     @commands.command()
-    async def members(self, ctx, *online):
+    async def members(self, ctx):
         onlineMembers = [member.name for member in ctx.guild.members]
         embed = discord.Embed(title=f'Members in {ctx.guild}', colour=discord.Colour.dark_red(),
                               description='\n'.join(onlineMembers))
@@ -80,6 +87,33 @@ class BotCommands(commands.Cog):
         else:
             embed.set_image(url=f'{user.avatar}')
         await ctx.send(embed=embed)
+
+    @commands.command()
+    async def wiki(self, ctx, *, wiki):
+        try:
+            page = wikipedia.page(wiki, auto_suggest=False, redirect=True, preload=False)  # Fetch article.
+            page_summary = wikipedia.summary(page.title, sentences=2, auto_suggest=False)  # Fetch summary. Restricted to two sentences.
+            embed = discord.Embed(title=page.title, url=page.url, description=page_summary)  # Make a subtle embed.
+            await ctx.send(embed=embed)
+        except wikipedia.DisambiguationError as e:  # In case of several results, such as in abbreviations
+            # select the first result (e.options[0])
+            page = wikipedia.page(e.options[0], auto_suggest=False, redirect=True, preload=False)
+            page_summary = wikipedia.summary(page.title, sentences=2, auto_suggest=False)
+            embed = discord.Embed(title=page.title, url=page.url, description=page_summary)
+            await ctx.send(embed=embed)
+
+    @commands.command()
+    async def lyrics(self, ctx, *, song):
+        song_name = genius.search_song(song)
+        try:
+            embed = discord.Embed(title=f'{song_name.artist} - {song_name.title}', colour=discord.Colour.blue(), description=song_name.lyrics)
+            await ctx.send(embed=embed)
+        except AttributeError:
+            embed = discord.Embed(title='Error', colour=discord.Colour.red(), description=f'Song **{song}** not found!')
+            await ctx.send(embed=embed)
+        except TimeoutError:
+            embed = discord.Embed(title='Error', colour=discord.Colour.red(), description=f'Genius could not respond in time.')
+            await ctx.send(embed=embed)
 
 
 async def setup(bot):
