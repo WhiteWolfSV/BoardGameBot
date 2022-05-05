@@ -3,8 +3,9 @@ from discord.ext import commands
 from discord.ext.commands import has_permissions
 import wikipedia
 import config
+from lyricsgenius import Genius
 
-
+genius = Genius('wR4cRh40SGApa-cRorjLQouljYZYoT388WaCItD74CckdtMnYhynn8pmKGxq7IM1rd_UHFZsW1XoB8ditvL86Q')
 class BotCommands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -73,6 +74,13 @@ class BotCommands(commands.Cog):
             page_summary = wikipedia.summary(page.title, sentences=2, auto_suggest=False)
             embed = discord.Embed(title=page.title, url=page.url, description=page_summary)
             await ctx.send(embed=embed)
+
+    @commands.command()
+    async def lyrics(self, ctx, *, song):
+        song_name = genius.search_song(song)
+        embed = discord.Embed(title=f'{song_name.artist} - {song_name.title}', description=song_name.lyrics)
+        await ctx.send(embed=embed)
+
 
 async def setup(bot):
     await bot.add_cog(BotCommands(bot))
